@@ -103,7 +103,7 @@ func (DayFifteen) SolvePartOne(input []string) (int, error) {
 func (DayFifteen) SolvePartTwo(input []string) (int, error) {
 	m := [][]string{}
 
-	x, y := 0, 0
+	// x, y := 0, 0
 
 	i := 0
 	for i = 0; input[i] != ""; i++ {
@@ -120,8 +120,8 @@ func (DayFifteen) SolvePartTwo(input []string) (int, error) {
 			case "@":
 				m[i][xj] = "@"
 				m[i][xj+1] = "."
-				x = xj
-				y = i
+				// x = xj
+				// y = i
 			case "O":
 				m[i][xj] = "["
 				m[i][xj+1] = "]"

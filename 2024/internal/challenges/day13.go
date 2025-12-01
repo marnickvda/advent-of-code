@@ -1,6 +1,7 @@
 package challenges
 
 import (
+	"math"
 	"regexp"
 	"strconv"
 )
@@ -22,7 +23,26 @@ func (DayThirteen) SolvePartOne(input []string) (int, error) {
 }
 
 func (DayThirteen) SolvePartTwo(input []string) (int, error) {
-	return 0, nil
+	cs := parseClawContraptions(&input)
+
+	sum := 0
+
+	memo = make(map[[2]int](struct {
+		a, b, cost int
+	}))
+
+	for _, c := range cs {
+		c.t.x += 10000000000000
+		c.t.y += 10000000000000
+
+		_, _, cost := findMinimumCost(c.a, c.b, c.t)
+
+		if cost != math.MaxInt {
+			sum += cost
+		}
+	}
+
+	return sum, nil
 }
 
 type Button struct {
@@ -75,24 +95,53 @@ func parseClawContraptions(input *[]string) []*ClawContraption {
 	return e
 }
 
-func dfs(a, b Button, l Location, x, y, ac, bc, sum int, sums *[]int) {
-	if x+a.dx == l.x && y+a.dy == l.y && ac+1 <= 100 {
-		*sums = append(*sums, sum+3)
-		return
+var memo map[[2]int](struct {
+	a, b, cost int
+})
+
+func findMinimumCost(a, b Button, l Location) (int, int, int) {
+	aX, aY, aCost := a.dx, a.dy, 3
+	bX, bY, bCost := b.dx, b.dy, 1
+	targetX, targetY := l.x, l.y
+
+	key := [2]int{targetX, targetY}
+	if result, found := memo[key]; found {
+		return result.a, result.b, result.cost
 	}
 
-	if x+b.dx == l.x && y+b.dy == l.y && bc+1 <= 100 {
-		*sums = append(*sums, sum+1)
-		return
+	minCost := math.MaxInt // Initialize with a very large number
+	optimalA, optimalB := -1, -1
+
+	// Iterate through possible values of a (button A presses)
+	for a := 0; a <= targetX/aX && a <= targetY/aY; a++ {
+		// Compute remaining X and Y after pressing A
+		remainingX := targetX - a*aX
+		remainingY := targetY - a*aY
+
+		// Check if the remaining values can be achieved with button B
+		if remainingX >= 0 && remainingY >= 0 && remainingX*bY == remainingY*bX {
+			// Calculate b (button B presses)
+			b := remainingX / bX // Division is valid because increments are aligned
+
+			// Calculate the total cost
+			cost := a*aCost + b*bCost
+
+			// Update minimum cost and optimal values
+			if cost < minCost {
+				minCost = cost
+				optimalA = a
+				optimalB = b
+			}
+		}
 	}
 
-	if x+a.dx < l.x && y+a.dy < l.y && ac+1 < 100 {
-		dfs(a, b, l, x+a.dx, y+a.dy, ac+1, bc, sum+3, sums)
-	}
+	// Store the result in the memoization map
+	memo[key] = struct {
+		a, b, cost int
+	}{optimalA, optimalB, minCost}
 
-	if x+b.dx < l.x && y+b.dy < l.y && bc+1 < 100 {
-		dfs(a, b, l, x+b.dx, y+b.dy, ac, bc+1, sum+1, sums)
-	}
+	return optimalA, optimalB, minCost
+
 }
 
 func bruteforce(a, b Button, l Location) int {
