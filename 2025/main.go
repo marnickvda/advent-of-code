@@ -8,10 +8,14 @@ import (
 )
 
 func main() {
-	lines, _ := inputs.ReadInput(1)
+	lines, _ := inputs.ReadInput(2)
 
-	d1 := internal.NewDayOne()
-	sol := d1.SolvePartTwo(lines)
+	//d1 := internal.NewDayOne()
+	//sol := d1.SolvePartTwo(lines)
+
+	d2 := internal.DayTwo{}
+	//sol := d2.SolvePartOne(lines)
+	sol := d2.SolvePartTwo(lines)
 
 	fmt.Println(sol)
 }
