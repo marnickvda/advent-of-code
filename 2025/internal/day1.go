@@ -48,7 +48,7 @@ func (d *DayOne) rotateCount(n int) int {
 	return c
 }
 
-func (d *DayOne) SolvePartOne(lines []string) any {
+func (d *DayOne) SolvePartOne(lines []string) int {
 	zC := 0
 	for _, l := range lines {
 		n, _ := strconv.ParseInt(l[1:], 10, 0)
@@ -68,7 +68,7 @@ func (d *DayOne) SolvePartOne(lines []string) any {
 	return zC
 }
 
-func (d *DayOne) SolvePartTwo(lines []string) any {
+func (d *DayOne) SolvePartTwo(lines []string) int {
 	zC := 0
 	for _, l := range lines {
 		n, _ := strconv.ParseInt(l[1:], 10, 0)

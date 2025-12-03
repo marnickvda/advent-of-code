@@ -1,6 +1,6 @@
 package internal
 
 type Challenge interface {
-	SolvePartOne(lines []string) any
-	SolvePartTwo(lines []string) any
+	SolvePartOne(lines []string) int
+	SolvePartTwo(lines []string) int
 }

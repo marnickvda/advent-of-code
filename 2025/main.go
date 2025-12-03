@@ -1,21 +1,65 @@
 package main
 
 import (
-	"fmt"
+	"flag"
+	"log"
+	"time"
 
 	"github.com/marnickvda/aoc/2025/inputs"
 	"github.com/marnickvda/aoc/2025/internal"
 )
 
+var flags struct {
+	day  int
+	part int
+}
+
+var challenges = map[int]internal.Challenge{
+	1: &internal.DayOne{},
+	2: &internal.DayTwo{},
+	3: &internal.DayThree{},
+}
+
 func main() {
-	lines, _ := inputs.ReadInput(2)
+	flag.IntVar(&flags.day, "day", 0, "Challenge day to execute")
+	flag.IntVar(&flags.part, "part", 1, "Part of the challenge to execute")
 
-	//d1 := internal.NewDayOne()
-	//sol := d1.SolvePartTwo(lines)
+	flag.Parse()
 
-	d2 := internal.DayTwo{}
-	//sol := d2.SolvePartOne(lines)
-	sol := d2.SolvePartTwo(lines)
+	if flags.day <= 0 {
+		log.Fatalln("-day flag must be positive")
+	}
 
-	fmt.Println(sol)
+	if flags.part != 1 && flags.part != 2 {
+		log.Fatalln("-part flag must be 1 or 2")
+	}
+
+	input, err := inputs.ReadInput(flags.day)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("Loaded %d lines of input\n", len(input))
+
+	c := challenges[flags.day]
+	if c == nil {
+		log.Fatal("Challenge does not exist, did you forget to add it?")
+	}
+
+	var ans int
+	var elapsed time.Duration
+
+	if flags.part == 1 {
+		start := time.Now()
+		ans = c.SolvePartOne(input)
+		elapsed = time.Since(start)
+	}
+
+	if flags.part == 2 {
+		start := time.Now()
+		ans = c.SolvePartTwo(input)
+		elapsed = time.Since(start)
+	}
+
+	log.Printf("Solution to day %d part %d is '%d' (in %s)", flags.day, flags.part, ans, elapsed)
 }

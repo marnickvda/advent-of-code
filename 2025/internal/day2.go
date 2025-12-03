@@ -33,7 +33,7 @@ func invalidSequenceCount(start, end string) (int, []string) {
 	return invalidCount, invalids
 }
 
-func (d *DayTwo) SolvePartOne(lines []string) any {
+func (d *DayTwo) SolvePartOne(lines []string) int {
 	line := lines[0]
 
 	ranges := strings.Split(line, ",")
@@ -55,7 +55,7 @@ func (d *DayTwo) SolvePartOne(lines []string) any {
 	return c
 }
 
-func (d *DayTwo) SolvePartTwo(lines []string) any {
+func (d *DayTwo) SolvePartTwo(lines []string) int {
 	l := lines[0]
 	rs := strings.Split(l, ",")
 
