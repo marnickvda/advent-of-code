@@ -20,6 +20,9 @@ var challenges = map[int]internal.Challenge{
 	3: &internal.DayThree{},
 	4: &internal.DayFour{},
 	5: &internal.DayFive{},
+	6: &internal.DaySix{
+		ValueRows: 4,
+	},
 }
 
 func main() {
