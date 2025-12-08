@@ -24,6 +24,9 @@ var challenges = map[int]internal.Challenge{
 		ValueRows: 4,
 	},
 	7: &internal.DaySeven{},
+	8: &internal.DayEight{
+		MaxConnections: 1000,
+	},
 }
 
 func main() {
