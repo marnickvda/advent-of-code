@@ -27,6 +27,7 @@ var challenges = map[int]internal.Challenge{
 	8: &internal.DayEight{
 		MaxConnections: 1000,
 	},
+	9: &internal.DayNine{},
 }
 
 func main() {
